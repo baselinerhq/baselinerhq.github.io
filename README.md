@@ -33,6 +33,17 @@ the VitePress tree, and applies generic link fixups (a link to a synced page →
 its site path; any other relative link → the upstream `github.com` blob/tree
 URL). **Only this repo's synced copies are ever edited — never the upstream.**
 
+### No emoji in imported docs
+
+Synced pages are technical references, so **the imported docs must not contain
+emoji** — they render as tofu boxes on platforms without a color-emoji font
+(e.g. bare Linux). `sync-docs.mjs` strips any emoji it finds and prints a
+`! <page>:<line> stripped emoji …` warning so the upstream repo can be cleaned
+up; the build stays clean regardless. Brand iconography is local to this repo
+only — the home page (`docs/index.md`) uses inline [Lucide](https://lucide.dev)
+SVG icons (ISC-licensed), which are theme-colored and render identically
+everywhere.
+
 ### Adding a project
 
 Append a source to `docs.sources.json` — that's it. The `primary` source is
