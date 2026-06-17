@@ -1,4 +1,65 @@
 import { defineConfig } from 'vitepress'
+import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+
+// Single source of truth for which projects' docs appear on the site. See
+// ../../docs.sources.json — adding a project there extends the nav and sidebar
+// automatically (no edits here).
+const manifest = JSON.parse(
+  readFileSync(fileURLToPath(new URL('../../docs.sources.json', import.meta.url)), 'utf8')
+) as {
+  primary: string
+  sources: {
+    name: string
+    title: string
+    repo: string
+    ref: string
+    docsDir: string
+    pages: { src: string; out: string; text: string; section?: string }[]
+  }[]
+}
+
+const primary = manifest.sources.find((s) => s.name === manifest.primary)!
+const others = manifest.sources.filter((s) => s.name !== manifest.primary)
+
+const sectionsOf = (pages: { section?: string }[]) => [
+  ...new Set(pages.map((p) => p.section ?? 'Docs'))
+]
+
+// nav: primary's Guide section as a dropdown, its other sections as links, a
+// dropdown per additional project, then a resources menu.
+const nav: any[] = []
+for (const sec of sectionsOf(primary.pages)) {
+  const items = primary.pages
+    .filter((p) => (p.section ?? 'Docs') === sec)
+    .map((p) => ({ text: p.text, link: `/${p.out}` }))
+  if (sec === 'Guide') nav.push({ text: sec, items })
+  else nav.push(...items)
+}
+for (const s of others) {
+  nav.push({ text: s.title, items: s.pages.map((p) => ({ text: p.text, link: `/${s.name}/${p.out}` })) })
+}
+nav.push({
+  text: 'Resources',
+  items: [
+    { text: 'Releases', link: `https://github.com/${primary.repo}/releases` },
+    { text: 'GitHub Action', link: 'https://github.com/baselinerhq/baseliner-action' },
+    { text: 'Go Reference', link: `https://pkg.go.dev/github.com/${primary.repo}` }
+  ]
+})
+
+// sidebar: primary at root, each additional project namespaced under /<name>/.
+const groupsFor = (pages: typeof primary.pages, base: string) =>
+  sectionsOf(pages).map((sec) => ({
+    text: sec,
+    collapsed: false,
+    items: pages
+      .filter((p) => (p.section ?? 'Docs') === sec)
+      .map((p) => ({ text: p.text, link: `${base}/${p.out}` }))
+  }))
+
+const sidebar: Record<string, any> = { '/': groupsFor(primary.pages, '') }
+for (const s of others) sidebar[`/${s.name}/`] = groupsFor(s.pages, `/${s.name}`)
 
 const description =
   'Renovate, but for repository governance. baseliner is a single static Go ' +
@@ -14,9 +75,7 @@ export default defineConfig({
   cleanUrls: true,
   lastUpdated: true,
   appearance: 'dark',
-  sitemap: {
-    hostname: 'https://baselinerhq.github.io'
-  },
+  sitemap: { hostname: 'https://baselinerhq.github.io' },
   head: [
     ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }],
     ['meta', { name: 'theme-color', content: '#00A59C' }],
@@ -36,57 +95,12 @@ export default defineConfig({
   themeConfig: {
     logo: '/baseliner-logo.png',
     siteTitle: 'baseliner',
-    nav: [
-      {
-        text: 'Guide',
-        items: [
-          { text: 'Getting Started', link: '/getting-started' },
-          { text: 'Install', link: '/install' },
-          { text: 'Configuration', link: '/configuration' },
-          { text: 'CLI Reference', link: '/cli' },
-          { text: 'Policies', link: '/policies' },
-          { text: 'Control Repo', link: '/control-repo' }
-        ]
-      },
-      { text: 'Roadmap', link: '/roadmap' },
-      {
-        text: 'v0.1.1',
-        items: [
-          { text: 'Releases', link: 'https://github.com/baselinerhq/baseliner/releases' },
-          { text: 'Changelog', link: 'https://github.com/baselinerhq/baseliner/releases/latest' },
-          { text: 'Go Reference', link: 'https://pkg.go.dev/github.com/baselinerhq/baseliner' }
-        ]
-      }
-    ],
-    sidebar: {
-      '/': [
-        {
-          text: 'Guide',
-          collapsed: false,
-          items: [
-            { text: 'Getting Started', link: '/getting-started' },
-            { text: 'Install', link: '/install' },
-            { text: 'Configuration', link: '/configuration' },
-            { text: 'CLI Reference', link: '/cli' },
-            { text: 'Policies', link: '/policies' },
-            { text: 'Control Repo', link: '/control-repo' }
-          ]
-        },
-        {
-          text: 'Project',
-          collapsed: false,
-          items: [{ text: 'Roadmap', link: '/roadmap' }]
-        }
-      ]
-    },
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/baselinerhq/baseliner' }
-    ],
-    search: {
-      provider: 'local'
-    },
+    nav,
+    sidebar,
+    socialLinks: [{ icon: 'github', link: `https://github.com/${primary.repo}` }],
+    search: { provider: 'local' },
     editLink: {
-      pattern: 'https://github.com/baselinerhq/baseliner/edit/main/docs/:path',
+      pattern: `https://github.com/${primary.repo}/edit/${primary.ref}/${primary.docsDir}/:path`,
       text: 'Edit this page on GitHub'
     },
     footer: {

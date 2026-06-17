@@ -11,10 +11,10 @@
   },
   "license": "MIT",
   "scripts": {
-    "sync-docs": "bash scripts/sync-docs.sh",
-    "predocs:dev": "bash scripts/sync-docs.sh",
+    "sync-docs": "node scripts/sync-docs.mjs",
+    "predocs:dev": "node scripts/sync-docs.mjs",
     "docs:dev": "vitepress dev docs",
-    "predocs:build": "bash scripts/sync-docs.sh",
+    "predocs:build": "node scripts/sync-docs.mjs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
   },

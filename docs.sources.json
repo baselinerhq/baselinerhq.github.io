@@ -1,0 +1,23 @@
+{
+  "$comment": "Declares the documentation sources for this org docs site. To add a project, append an entry here — no workflow or config changes needed. The 'primary' source is served at the site root; others are namespaced under /<name>/. Pages are pulled from each repo's docs at build time (single source of truth).",
+  "primary": "baseliner",
+  "sources": [
+    {
+      "name": "baseliner",
+      "title": "baseliner",
+      "repo": "baselinerhq/baseliner",
+      "ref": "main",
+      "docsDir": "docs",
+      "dev": "../baseliner/docs",
+      "pages": [
+        { "src": "getting-started.md", "out": "getting-started", "text": "Getting Started", "section": "Guide" },
+        { "src": "install.md", "out": "install", "text": "Install", "section": "Guide" },
+        { "src": "configuration.md", "out": "configuration", "text": "Configuration", "section": "Guide" },
+        { "src": "cli.md", "out": "cli", "text": "CLI Reference", "section": "Guide" },
+        { "src": "policies.md", "out": "policies", "text": "Writing a Policy", "section": "Guide" },
+        { "src": "control-repo.md", "out": "control-repo", "text": "Control Repo", "section": "Guide" },
+        { "src": "ROADMAP.md", "out": "roadmap", "text": "Roadmap", "section": "Project" }
+      ]
+    }
+  ]
+}

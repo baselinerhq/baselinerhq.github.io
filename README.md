@@ -5,37 +5,53 @@ The documentation website for [**baseliner**](https://github.com/baselinerhq/bas
 [VitePress](https://vitepress.dev) and deployed to GitHub Pages at
 **<https://baselinerhq.github.io>**.
 
-## Single source of truth
+## Single source of truth (manifest-driven)
 
-The guide pages are **not** maintained here. They are sourced from the
-[`baselinerhq/baseliner`](https://github.com/baselinerhq/baseliner) repo's
-`docs/` directory at build time, so the site always tracks the canonical docs.
+Guide pages are **not** maintained here — they're pulled from each project's repo
+at build time, so the site always tracks the canonical docs. The projects to
+include are declared in [`docs.sources.json`](docs.sources.json):
 
-`scripts/sync-docs.sh` copies the upstream docs into the VitePress content tree
-and applies a few minimal link fixups (rewriting upstream-relative links to
-absolute `github.com` URLs, and the `ROADMAP.md` cross-link to the local
-`/roadmap` page) so the dead-link checker passes. **Only this repo's synced
-copies are ever edited — never the upstream `baseliner` repo.**
+```jsonc
+{
+  "primary": "baseliner",        // served at the site root
+  "sources": [
+    {
+      "name": "baseliner",
+      "repo": "baselinerhq/baseliner",
+      "ref": "main",
+      "docsDir": "docs",
+      "dev": "../baseliner/docs", // local checkout used when present
+      "pages": [ { "src": "cli.md", "out": "cli", "text": "CLI Reference", "section": "Guide" } ]
+    }
+  ]
+}
+```
 
-Pages surfaced: Getting Started, Install, Configuration, CLI Reference,
-Policies, Control Repo, and Roadmap.
+`scripts/sync-docs.mjs` reads the manifest, resolves each source (local `dev`
+checkout if present, else a shallow clone of `repo@ref`), copies its pages into
+the VitePress tree, and applies generic link fixups (a link to a synced page →
+its site path; any other relative link → the upstream `github.com` blob/tree
+URL). **Only this repo's synced copies are ever edited — never the upstream.**
+
+### Adding a project
+
+Append a source to `docs.sources.json` — that's it. The `primary` source is
+served at the root; every other source is namespaced under `/<name>/`, with its
+own sidebar, and the nav/sidebar are generated from the manifest. No changes to
+the VitePress config or the deploy workflow are needed. (For a namespaced
+source, also add `docs/<name>/` to `.gitignore`, since synced pages aren't
+committed.)
 
 ## Local development
 
 ```bash
 npm install
-
-# Sync docs from a sibling checkout of the baseliner repo, then run dev/build.
-# sync-docs auto-detects ./baseliner/docs, ../baseliner/docs, or pass a path:
-npm run sync-docs -- /path/to/baseliner/docs
-
-npm run docs:dev      # local dev server (runs sync-docs first)
+npm run docs:dev      # dev server (auto-syncs from the manifest first)
 npm run docs:build    # production build into docs/.vitepress/dist
 npm run docs:preview  # preview the production build
 ```
 
-`docs:dev` and `docs:build` run `sync-docs` automatically via npm `pre*`
-scripts. Set `BASELINER_DOCS_SRC` to point at the docs source non-interactively.
+`docs:dev`/`docs:build` run the sync automatically via npm `pre*` scripts.
 
 ## Brand assets
 
@@ -51,9 +67,11 @@ on a near-black `#0e0e0e` canvas, configured in
 ## Deployment
 
 `.github/workflows/deploy.yml` runs on every push to `main` (and via
-`workflow_dispatch`): it checks out this repo **and** `baselinerhq/baseliner`,
-runs `npm ci`, syncs the docs, builds with VitePress, and publishes via
-`actions/upload-pages-artifact` + `actions/deploy-pages`.
+`workflow_dispatch`): it checks out this repo, runs `npm ci`, then builds with
+VitePress (the pre-build hook clones the manifest's sources and syncs their
+docs), and publishes via `actions/upload-pages-artifact` + `actions/deploy-pages`.
+Because the sources are cloned from the manifest, adding a project never touches
+this workflow.
 
 > GitHub Pages must be enabled for this repo with the **GitHub Actions** source.
 

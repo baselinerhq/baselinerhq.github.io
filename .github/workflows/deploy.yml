@@ -23,14 +23,6 @@ jobs:
       - name: Checkout site (baselinerhq.github.io)
         uses: actions/checkout@v4
 
-      # The docs are sourced from the baseliner repo at build time so the site
-      # is always a single source of truth, not a hand-copied snapshot.
-      - name: Checkout baseliner (docs source)
-        uses: actions/checkout@v4
-        with:
-          repository: baselinerhq/baseliner
-          path: baseliner
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -40,9 +32,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Sync docs from baseliner
-        run: npm run sync-docs -- baseliner/docs
-
+      # Docs are pulled from each repo listed in docs.sources.json at build time
+      # (single source of truth). The build's pre-hook clones the sources, so
+      # adding a project is a manifest edit — no change to this workflow.
       - name: Build with VitePress
         run: npm run docs:build
 
