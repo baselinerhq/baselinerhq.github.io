@@ -1,0 +1,24 @@
+{
+  "name": "baselinerhq.github.io",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Documentation website for baseliner — Renovate, but for repository governance.",
+  "type": "module",
+  "homepage": "https://baselinerhq.github.io",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baselinerhq/baselinerhq.github.io.git"
+  },
+  "license": "MIT",
+  "scripts": {
+    "sync-docs": "bash scripts/sync-docs.sh",
+    "predocs:dev": "bash scripts/sync-docs.sh",
+    "docs:dev": "vitepress dev docs",
+    "predocs:build": "bash scripts/sync-docs.sh",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.3"
+  }
+}
