@@ -35,6 +35,30 @@ function resolveSource(src) {
   return path.join(tmp, src.docsDir)
 }
 
+// Imported docs are technical references and must not carry emoji (they tofu on
+// platforms without a color-emoji font, e.g. bare Linux). Strip any emoji during
+// sync so the site stays clean regardless of upstream, and warn with the page +
+// line so the upstream repo can be cleaned up. Brand iconography lives only in
+// this repo (the home page's Lucide SVGs), never in synced content.
+//
+// Match true emoji pictographs via the Unicode Extended_Pictographic property
+// (plus flag pairs, ZWJ, variation selector, keycap), minus the text-symbols
+// ©®™. This deliberately excludes arrows (→ ⇒), plain checkmarks (✓ ✗) and
+// other technical punctuation, which render everywhere and belong in the docs.
+const EMOJI_RE =
+  /[[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}]--[\u{A9}\u{AE}\u{2122}]]\u{FE0F}?|[\u{200D}\u{20E3}\u{FE0F}]/gv
+
+/** Remove emoji from a page's body; return the cleaned text and warn per line. */
+function stripEmoji(body, label) {
+  if (!EMOJI_RE.test(body)) return body
+  body.split('\n').forEach((line, i) => {
+    EMOJI_RE.lastIndex = 0
+    if (EMOJI_RE.test(line))
+      console.warn(`  ! ${label}:${i + 1} stripped emoji (no emoji in imported docs): ${line.trim()}`)
+  })
+  return body.replace(EMOJI_RE, '').replace(/[ \t]+$/gm, '')
+}
+
 /** Rewrite an upstream markdown link to something valid on the site. */
 function rewriteLink(target, src, base, pageMap) {
   if (/^(https?:|#|mailto:)/.test(target)) return target
@@ -69,6 +93,7 @@ for (const src of manifest.sources) {
       process.exit(1)
     }
     let body = fs.readFileSync(from, 'utf8')
+    body = stripEmoji(body, `${src.name}/${page.src}`)
     body = body.replace(/\]\(([^)]+)\)/g, (m, t) => `](${rewriteLink(t, src, base, pageMap)})`)
 
     // The global editLink pattern only fits the primary repo's same-named pages;

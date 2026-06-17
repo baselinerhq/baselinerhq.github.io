@@ -99,6 +99,13 @@
   background-color: var(--vp-c-brand-soft) !important;
 }
 
+/* Lucide feature icons inherit currentColor — tint them brand teal. */
+.VPFeature .icon svg {
+  width: 24px;
+  height: 24px;
+  color: var(--vp-c-brand-1);
+}
+
 /* Brand-tinted inline code. */
 .dark :not(pre) > code {
   color: var(--vp-c-brand-1);
