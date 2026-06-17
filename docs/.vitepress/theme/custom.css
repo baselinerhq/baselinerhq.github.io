@@ -1,0 +1,119 @@
+/**
+ * baseliner brand theme
+ * --------------------------------------------------------------------------
+ * Teal accent sampled from the logo (#00A59C), dark-mode-first with a
+ * near-black canvas (#0e0e0e). Geometric, technical, governance/compliance.
+ */
+
+:root {
+  /* Brand teal scale (logo = #00A59C). */
+  --bl-teal: #00a59c;
+  --bl-teal-bright: #1ec8bb;
+  --bl-teal-deep: #007a73;
+
+  --vp-c-brand-1: #00897f;
+  --vp-c-brand-2: #00a59c;
+  --vp-c-brand-3: #00a59c;
+  --vp-c-brand-soft: rgba(0, 165, 156, 0.14);
+  --vp-c-brand-softer: rgba(0, 165, 156, 0.08);
+
+  /* Buttons */
+  --vp-button-brand-bg: #00a59c;
+  --vp-button-brand-hover-bg: #00b9af;
+  --vp-button-brand-active-bg: #008a82;
+  --vp-button-brand-border: transparent;
+  --vp-button-brand-hover-border: transparent;
+  --vp-button-brand-text: #06201e;
+  --vp-button-brand-hover-text: #06201e;
+
+  /* Home hero */
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(
+    120deg,
+    #00a59c 25%,
+    #2dd4bf
+  );
+  --vp-home-hero-image-background-image: linear-gradient(
+    -45deg,
+    rgba(0, 165, 156, 0.5) 10%,
+    rgba(45, 212, 191, 0.35) 50%
+  );
+  --vp-home-hero-image-filter: blur(48px);
+}
+
+.dark {
+  /* Brighter teal for links/accents on the near-black canvas. */
+  --vp-c-brand-1: #21cabd;
+  --vp-c-brand-2: #00a59c;
+  --vp-c-brand-3: #00a59c;
+  --vp-c-brand-soft: rgba(0, 165, 156, 0.18);
+  --vp-c-brand-softer: rgba(0, 165, 156, 0.1);
+
+  /* Near-black, geometric canvas. */
+  --vp-c-bg: #0e0e0e;
+  --vp-c-bg-alt: #090909;
+  --vp-c-bg-soft: #161616;
+  --vp-c-bg-elv: #161616;
+
+  --vp-c-divider: #242424;
+  --vp-c-gutter: #050505;
+
+  --vp-button-brand-text: #06201e;
+  --vp-button-brand-hover-text: #06201e;
+
+  --vp-home-hero-image-background-image: linear-gradient(
+    -45deg,
+    rgba(0, 165, 156, 0.55) 10%,
+    rgba(45, 212, 191, 0.3) 50%
+  );
+  --vp-home-hero-image-filter: blur(56px);
+}
+
+/* Larger, crisper hero logo. */
+.VPHero .image-bg {
+  opacity: 0.7;
+}
+
+.VPHero .VPImage {
+  filter: drop-shadow(0 12px 40px rgba(0, 165, 156, 0.35));
+}
+
+/* Tasteful teal hairline under the top nav. */
+.dark .VPNav {
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+/* Feature cards: subtle teal lift on hover. */
+.VPFeature {
+  transition: border-color 0.25s ease, transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.VPFeature:hover {
+  border-color: var(--vp-c-brand-2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 165, 156, 0.12);
+}
+
+.VPFeature .icon {
+  background-color: var(--vp-c-brand-soft) !important;
+}
+
+/* Brand-tinted inline code. */
+.dark :not(pre) > code {
+  color: var(--vp-c-brand-1);
+}
+
+/* Custom home sections below the hero/features. */
+.bl-section {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 8px 24px 0;
+}
+
+.bl-section h2 {
+  border-top: none;
+  margin-top: 8px;
+  padding-top: 8px;
+  letter-spacing: -0.02em;
+}
