@@ -16,9 +16,12 @@
     "docs:dev": "vitepress dev docs",
     "predocs:build": "node scripts/sync-docs.mjs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "brand": "node scripts/render-brand.mjs"
   },
   "devDependencies": {
+    "png-to-ico": "^3.0.1",
+    "sharp": "^0.35.1",
     "vitepress": "^1.6.3"
   }
 }

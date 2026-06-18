@@ -79,6 +79,7 @@ export default defineConfig({
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/baseliner-logo.svg' }],
     ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }],
+    ['link', { rel: 'icon', href: '/favicon.ico', sizes: 'any' }],
     ['meta', { name: 'theme-color', content: '#00A59C' }],
     ['meta', { name: 'author', content: 'baselinerhq' }],
     ['meta', { property: 'og:type', content: 'website' }],

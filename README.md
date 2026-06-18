@@ -72,17 +72,21 @@ The teal-octagon logo is canonical here as **vector**:
   `#00A59C`). Used directly as the nav logo, hero image, and SVG favicon.
 - `docs/public/baseliner-logo.svg` — the served copy of the above.
 - `docs/public/favicon.png` — PNG favicon fallback for older browsers.
+- `docs/public/favicon.ico` — multi-size (16/32/48) legacy `/favicon.ico`.
 - `docs/public/og-image.png` — 1200×630 social-card image (`og:image`); social
   scrapers don't render SVG, so this stays raster.
 
-The two PNGs are **derived from the SVG** — regenerate them after editing the
-logo (requires Inkscape):
+These rasters are **derived from the SVG** — never edit them by hand.
+Regenerate after editing the logo:
 
 ```bash
-inkscape brand/baseliner-logo.svg --export-type=png \
-  --export-filename=docs/public/favicon.png -w 64 -h 64
-# og-image: render at 520px and center on a 1200×630 #0e0e0e canvas
+npm run brand
 ```
+
+`scripts/render-brand.mjs` rasterizes the SVG into every target listed in its
+`targets` array (no system tools — uses `sharp` + `png-to-ico`). To add a
+variant (a new size, a recolored mark, a different background), append one row
+to that array; no other code changes.
 
 Accent teal is `#00A59C` (sampled from the logo); the theme is dark-mode-first
 on a near-black `#0e0e0e` canvas, configured in
