@@ -66,10 +66,23 @@ npm run docs:preview  # preview the production build
 
 ## Brand assets
 
-The teal-octagon logo is canonical here:
+The teal-octagon logo is canonical here as **vector**:
 
-- `docs/public/baseliner-logo.png` — hero image, favicon, and og:image.
-- `brand/baseliner-logo.drawio` — editable draw.io source.
+- `brand/baseliner-logo.svg` — the canonical, editable source (transparent,
+  `#00A59C`). Used directly as the nav logo, hero image, and SVG favicon.
+- `docs/public/baseliner-logo.svg` — the served copy of the above.
+- `docs/public/favicon.png` — PNG favicon fallback for older browsers.
+- `docs/public/og-image.png` — 1200×630 social-card image (`og:image`); social
+  scrapers don't render SVG, so this stays raster.
+
+The two PNGs are **derived from the SVG** — regenerate them after editing the
+logo (requires Inkscape):
+
+```bash
+inkscape brand/baseliner-logo.svg --export-type=png \
+  --export-filename=docs/public/favicon.png -w 64 -h 64
+# og-image: render at 520px and center on a 1200×630 #0e0e0e canvas
+```
 
 Accent teal is `#00A59C` (sampled from the logo); the theme is dark-mode-first
 on a near-black `#0e0e0e` canvas, configured in

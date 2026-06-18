@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 468 468" role="img" aria-label="baseliner">
+  <title>baseliner</title>
+  <g fill="none" stroke="#00A59C" stroke-width="20">
+    <polygon points="141.22,10.00 326.78,10.00 458.00,141.22 458.00,326.78 326.78,458.00 141.22,458.00 10.00,326.78 10.00,141.22" stroke-linejoin="miter"/>
+  </g>
+  <g fill="#00A59C">
+    <circle cx="103" cy="185" r="40"/>
+    <circle cx="228" cy="185" r="40"/>
+    <rect x="60" y="266" width="349" height="31" rx="2"/>
+  </g>
+  <polyline points="318,190 342,209 388,139" fill="none" stroke="#00A59C" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

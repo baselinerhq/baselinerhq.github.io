@@ -66,7 +66,7 @@ const description =
   'binary that scans a fleet of repositories against a configurable policy, ' +
   'scores each repo, and reports compliance — ad hoc, in CI, or continuously.'
 
-const ogImage = 'https://baselinerhq.github.io/baseliner-logo.png'
+const ogImage = 'https://baselinerhq.github.io/og-image.png'
 
 export default defineConfig({
   title: 'baseliner',
@@ -77,6 +77,7 @@ export default defineConfig({
   appearance: 'dark',
   sitemap: { hostname: 'https://baselinerhq.github.io' },
   head: [
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/baseliner-logo.svg' }],
     ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }],
     ['meta', { name: 'theme-color', content: '#00A59C' }],
     ['meta', { name: 'author', content: 'baselinerhq' }],
@@ -93,7 +94,7 @@ export default defineConfig({
     ['meta', { name: 'twitter:image', content: ogImage }]
   ],
   themeConfig: {
-    logo: '/baseliner-logo.png',
+    logo: '/baseliner-logo.svg',
     siteTitle: 'baseliner',
     nav,
     sidebar,

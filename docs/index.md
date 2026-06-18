@@ -8,7 +8,7 @@ hero:
   text: Repository governance, as code.
   tagline: "Renovate, but for repository governance. One static binary scans your whole fleet against a configurable policy, scores every repo 0–1, and reports compliance — ad hoc, in CI, or continuously from a control repo."
   image:
-    src: /baseliner-logo.png
+    src: /baseliner-logo.svg
     alt: baseliner logo — a teal octagon with two dots, a checkmark, and a baseline bar
   actions:
     - theme: brand
