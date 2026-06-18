@@ -12,6 +12,8 @@
  *   { out, size }            -> a square, transparent PNG
  *   { out, ico: [..sizes] }  -> a multi-size .ico
  *   { out, w, h, logo, bg }  -> the logo centered on a solid w×h canvas
+ *   { out, src, w, h }       -> a hand-authored SVG (e.g. a text+logo card)
+ *                               rendered at w×h; src is relative to the repo root
  * Any row may set `fg` to recolor the mark (defaults to the brand teal).
  */
 import { readFileSync, writeFileSync } from 'node:fs'
@@ -27,7 +29,8 @@ const TEAL = '#00A59C' // the one brand color baked into the source SVG
 const targets = [
   { out: 'docs/public/favicon.png', size: 64 }, // PNG fallback for older browsers
   { out: 'docs/public/favicon.ico', ico: [16, 32, 48] }, // legacy /favicon.ico
-  { out: 'docs/public/og-image.png', w: 1200, h: 630, logo: 520, bg: '#0e0e0e' } // social card
+  { out: 'docs/public/og-image.png', w: 1200, h: 630, logo: 520, bg: '#0e0e0e' }, // docs og:image
+  { out: 'docs/public/social-preview.png', src: 'brand/social-preview.svg', w: 1280, h: 640 } // repo social card
 ]
 
 const baseSvg = readFileSync(SRC, 'utf8')
@@ -46,6 +49,9 @@ for (const t of targets) {
   const out = path.join(ROOT, t.out)
   if (t.ico) {
     writeFileSync(out, await pngToIco(await Promise.all(t.ico.map((s) => renderLogo(s, t.fg)))))
+  } else if (t.src) {
+    const svg = readFileSync(path.join(ROOT, t.src))
+    writeFileSync(out, await sharp(svg, { density: 384 }).resize(t.w, t.h).png().toBuffer())
   } else if (t.bg) {
     const logo = await renderLogo(t.logo, t.fg)
     const png = await sharp({ create: { width: t.w, height: t.h, channels: 4, background: t.bg } })
