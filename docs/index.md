@@ -6,7 +6,7 @@ titleTemplate: false
 hero:
   name: baseliner
   text: Repository governance, as code.
-  tagline: "Renovate, but for repository governance. One static binary scans your whole fleet against a configurable policy, scores every repo 0–1, and reports compliance — ad hoc, in CI, or continuously from a control repo."
+  tagline: "Renovate, but for repository governance. One static binary checks your whole fleet against a policy you write, scores what it can observe, and tells you what it can't — ad hoc, in CI, or continuously from a control repo."
   image:
     src: /baseliner-logo.svg
     alt: baseliner logo — a teal octagon with two dots, a checkmark, and a baseline bar
@@ -24,13 +24,13 @@ features:
     details: Discover repositories from local checkouts and entire GitHub orgs or users in a single pass, then normalize filesystem and git metadata into one model.
   - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg>'
     title: Your baseline, as code
-    details: README, LICENSE, CODEOWNERS, CI, branch protection and more — declare the standard every repo should meet as policy-as-code. The policy is the product.
+    details: README, LICENSE, CODEOWNERS, CI, dependency updates and more today — declare the standard every repo should meet as policy-as-code. Branch protection and rulesets, read together, are next. The policy is the product.
   - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>'
-    title: Severity-weighted scoring
-    details: Every repo gets a single 0–1 score from critical/high/medium/low weighted checks, so a fleet of 0.96s reads as "almost there", not a wall of red.
+    title: A score that admits what it can't see
+    details: Every repo gets a severity-weighted 0–1 score over what could be observed, and a separate coverage figure for what could not. Unreadable evidence is unknown, never a pass.
   - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="8" x="3" y="3" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect width="8" height="8" x="13" y="13" rx="2"/></svg>'
     title: Built for CI
-    details: Console and JSON output (SARIF on the way), meaningful exit codes, and --fail-under to gate pipelines on a score threshold for gradual rollout.
+    details: Console, JSON, SARIF and Markdown output, meaningful exit codes, --fail-under and --min-coverage to gate pipelines, and a monitor mode for scheduled scans.
   - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M22 8c0-2.3-.8-4.3-2-6"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/><path d="M4 2C2.8 3.7 2 5.7 2 8"/></svg>'
     title: Findings issues & drift
     details: Optionally open a findings issue per repo and auto-close it when the repo becomes compliant. Run continuously from a control repo to catch drift.
